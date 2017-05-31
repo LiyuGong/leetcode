@@ -40,5 +40,6 @@ public class hw2_isPerfectSquare {
 			mid = (start + end) / 2;
 			
 		}
+		return false;
 	}
 }
