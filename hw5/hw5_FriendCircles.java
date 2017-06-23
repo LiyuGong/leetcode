@@ -1,5 +1,7 @@
 package leet_hw1;
 
+import java.util.Arrays;
+import java.util.HashSet;
 
 /**
  * 547. Friend Circles
@@ -41,7 +43,52 @@ If M[i][j] = 1, then M[j][i] = 1.
  *
  */
 public class hw5_FriendCircles {
+	int[] root;
+	int[] weight;
+	
 	public int findCircleNum(int[][] M) {
-        return 0;
+		int n = M.length;
+		root = new int[n];
+		for(int k = 0; k < n; k++){
+			root[k] = k;
+		}
+		weight = new int[n];
+		Arrays.fill(weight, 1);
+		
+		for(int i = 0; i < n; i++){
+			for(int j = i; j < n; j++){
+				if(M[i][j] == 1)
+					union(i,j);
+			}
+		}
+		
+		
+		HashSet<Integer> myset = new HashSet<>();
+		for(int i: root){
+			myset.add(find(i));
+		}
+		
+		return myset.size();
     }
+	private int find(int node){
+		while(root[node] != node){
+			root[node] = root[root[node]];
+			node = root[node];		
+		}
+		return node;
+	}
+	private void union(int node0, int node1){
+		int root0 = find(node0);
+		int root1 = find(node1);
+		if(root0 != root1){
+			if(weight[root0] > weight[root1]){
+				root[root1] = root0;
+				weight[root0] += weight[root1];
+			}
+			else{
+				root[root0] = root1;
+				weight[root1] += weight[root0];
+			}
+		}
+	}
 }
